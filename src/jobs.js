@@ -7,14 +7,19 @@ import path from 'path';
 
 const router = Router();
 const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, './uploads/');
+  destination: (req, file, next) => {
+    next(null, './uploads/');
   },
-  filename: (req, file, cb) => {
-    cb(null, new Date().toISOString().replace(/:/g, '-') + file.originalname);
+  filename: (req, file, next) => {
+    next(null, new Date().toISOString().replace(/:/g, '-') + file.originalname);
   }
-})
-const upload = multer({ storage });
+});
+
+const fileFilter = (req, file, next) => {
+  if (file.mimetype === 'application/pdf') next(null, true);
+  next(req.res.send({ message: 'huh'}), false);
+}
+const upload = multer({ storage, fileFilter });
 
 
 router.post('/upload', upload.single('pdfFile'), async (req, res) => {

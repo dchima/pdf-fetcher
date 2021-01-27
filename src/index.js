@@ -29,7 +29,8 @@ app.use(methodOverride());
 if (!production) {
   app.use(errorhandler());
 }
-app.use(express.static(path.join(__dirname, 'src')));
+
+app.use(express.static('uploads'));
 app.use('/api', jobs);
 app.get('/', (req, res) => res.status(200).send({
   message: 'Fancy Welcome Message',
