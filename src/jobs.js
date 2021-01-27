@@ -14,7 +14,7 @@ const storage = multer.diskStorage({
     cb(null, new Date().toISOString().replace(/:/g, '-') + file.originalname);
   }
 })
-const upload = multer({ storage: storage });
+const upload = multer({ storage });
 
 
 router.post('/upload', upload.single('pdfFile'), async (req, res) => {
@@ -22,8 +22,9 @@ router.post('/upload', upload.single('pdfFile'), async (req, res) => {
     console.log('Hi');
     // console.log(req);
     console.log(req.file);
+    res.send({ message: 'done'});
   } catch (error) {
-    return error;
+    res.send({ message: error });
   }
 });
 
